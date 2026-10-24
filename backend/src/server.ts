@@ -11,14 +11,21 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
-app.use(cors());
+
+const frontendOrigin =
+  process.env.FRONTEND_ORIGIN || "http://localhost:5173";
+
+app.use(cors({ origin: frontendOrigin }));
 app.use(express.json());
 
 const rpcUrl = process.env.RPC_URL;
 const contractAddress = process.env.CONTRACT_ADDRESS;
+const adminPrivateKey = process.env.ADMIN_PRIVATE_KEY;
 
-if (!rpcUrl || !contractAddress) {
-  throw new Error("Missing RPC_URL or CONTRACT_ADDRESS in .env");
+if (!rpcUrl || !contractAddress || !adminPrivateKey) {
+  throw new Error(
+    "Missing RPC_URL, CONTRACT_ADDRESS, or ADMIN_PRIVATE_KEY"
+  );
 }
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
@@ -35,17 +42,16 @@ const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
 
 // Local development only: first Hardhat account.
 // Never use this publicly known key on a real network.
-const localAdmin = new ethers.Wallet(
-  "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+const adminWallet = new ethers.Wallet(
+  adminPrivateKey,
   provider
 );
 
 const registry = new ethers.Contract(
   contractAddress,
   artifact.abi,
-  localAdmin
+  adminWallet
 );
-
 app.get("/", (_req, res) => {
   res.json({
     message: "Blockchain-Based Secure IoT Network API",
