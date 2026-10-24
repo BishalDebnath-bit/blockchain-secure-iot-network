@@ -221,6 +221,70 @@ const [lookingUp, setLookingUp] = useState(false);
       <p>
         Status: <strong>{deviceInfo.active ? "Active" : "Inactive"}</strong>
       </p>
+      
+      <div className="permission-actions">
+        <h4>Resource Permissions</h4>
+        <p>Manage access to the selected protected resource.</p>
+
+        <button
+          type="button"
+          onClick={async () => {
+            setLookupMessage(
+              `Granting ${resource} permission to ${deviceInfo.deviceId}...`
+            );
+
+            try {
+              const result = await updateDevicePermission(
+                deviceInfo.deviceId,
+                resource,
+                true
+              );
+
+              setLookupMessage(
+                `${result.message}. Transaction: ${result.transactionHash}`
+              );
+            } catch (error) {
+              setLookupMessage(
+                error instanceof Error
+                  ? error.message
+                  : "Failed to grant permission"
+              );
+            }
+          }}
+        >
+          Grant Selected Resource
+        </button>
+
+        <button
+          type="button"
+          onClick={async () => {
+            setLookupMessage(
+              `Revoking ${resource} permission from ${deviceInfo.deviceId}...`
+            );
+
+            try {
+              const result = await updateDevicePermission(
+                deviceInfo.deviceId,
+                resource,
+                false
+              );
+
+              setLookupMessage(
+                `${result.message}. Transaction: ${result.transactionHash}`
+              );
+            } catch (error) {
+              setLookupMessage(
+                error instanceof Error
+                  ? error.message
+                  : "Failed to revoke permission"
+              );
+            }
+          }}
+        >
+          Revoke Selected Resource
+        </button>
+      </div>
+
       <p>
         Registered at: <strong>{new Date(Number(deviceInfo.registeredAt) * 1000).toLocaleString()}</strong>
       </p>
