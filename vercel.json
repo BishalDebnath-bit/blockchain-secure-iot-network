@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npx hardhat compile",
+  "buildCommand": "npm install --include=dev && npx hardhat compile"
   "outputDirectory": "artifacts",
   "functions": {
     "api/index.ts": {
