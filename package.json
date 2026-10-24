@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx hardhat compile",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "compile": "hardhat compile",
+  "dev:api": "tsx backend/src/server.ts",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
