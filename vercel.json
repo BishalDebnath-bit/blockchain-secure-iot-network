@@ -1,12 +1,7 @@
 
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
-  "functions": {
-    "api/index.ts": {
-      "includeFiles": "artifacts/contracts/IoTDeviceRegistry.sol/IoTDeviceRegistry.json"
-    }
-  },
+  "framework": null,
   "rewrites": [
     {
       "source": "/(.*)",
@@ -14,4 +9,3 @@
     }
   ]
 }
-

@@ -3,8 +3,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { ethers } from "ethers";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { registryAbi } from "./registryAbi.js";
 
 dotenv.config();
 
@@ -30,15 +29,7 @@ if (!rpcUrl || !contractAddress || !adminPrivateKey) {
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
-const artifactPath = resolve(
-  process.cwd(),
-  "artifacts",
-  "contracts",
-  "IoTDeviceRegistry.sol",
-  "IoTDeviceRegistry.json"
-);
 
-const artifact = JSON.parse(readFileSync(artifactPath, "utf8"));
 
 // Local development only: first Hardhat account.
 // Never use this publicly known key on a real network.
@@ -47,11 +38,13 @@ const adminWallet = new ethers.Wallet(
   provider
 );
 
+
 const registry = new ethers.Contract(
   contractAddress,
-  artifact.abi,
+  registryAbi,
   adminWallet
 );
+
 app.get("/", (_req, res) => {
   res.json({
     message: "Blockchain-Based Secure IoT Network API",
