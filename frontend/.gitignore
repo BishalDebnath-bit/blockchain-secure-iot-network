@@ -30,3 +30,6 @@ dist-ssr
 # Hardhat generated files
 /artifacts
 /cache
+# Local Hardhat deployment data
+/ignition/deployments/
+
