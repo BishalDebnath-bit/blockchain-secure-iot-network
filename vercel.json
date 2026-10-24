@@ -1,7 +1,12 @@
-
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npx hardhat compile",
+  "outputDirectory": "artifacts",
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "artifacts/contracts/IoTDeviceRegistry.sol/IoTDeviceRegistry.json"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
@@ -9,6 +14,5 @@
     }
   ]
 }
-
 
 
